@@ -29,7 +29,7 @@
     'selenium':       ['topic-11-selenium-p1','topic-11-selenium-p2'], // extend when p3–p4 are added
     'playwright':     ['topic-12-playwright-p1','topic-12-playwright-p2','topic-12-playwright-p3','topic-12-playwright-p4'],
     'junit':          ['topic-13-junit-p1','topic-13-junit-p2','topic-13-junit-p3','topic-13-junit-p4'],
-    'code-challenges': ['topic-14-code-challenges-p1','topic-14-code-challenges-p2'],
+    'code-challenges': ['topic-14-code-challenges-p1','topic-14-code-challenges-p2','topic-14-code-challenges-p3','topic-14-code-challenges-p4'],
   };
 
   const BASE_PATH = 'js/questions/';
