@@ -1,129 +1,116 @@
 /**
- * IBM QE-FULLSTACK QUIZ — Lazy Topic Loader (loader.js)
- * ======================================================
- * Dynamically injects <script> tags for topic question files
- * only when they are needed, preventing the browser from
- * loading 10,000+ questions upfront.
+ * IBM QE-FULLSTACK QUIZ — Chunked Lazy Topic Loader (loader.js)
+ * ==============================================================
+ * Each topic is split into multiple part files (~100 q each).
+ * Part files use: window.QUIZ_BANK[topicId] = (window.QUIZ_BANK[topicId]||[]).concat([...])
+ * so they safely accumulate without overwriting each other.
  *
- * Each topic file sets window.QUESTIONS_<TOPIC> = [...] on load.
+ * The TOPIC_MANIFEST defines every part file per topic.
+ * loadTopics() loads all parts for the requested topics in parallel.
  */
-
 'use strict';
 
 (function () {
-  // Track which topic files have been requested to avoid double-loading
-  const _loaded  = new Set();
-  const _loading = new Map(); // topicId => [callbacks]
+  /* ── Global registry initialisation ─────────────────────── */
+  if (!window.QUIZ_BANK) window.QUIZ_BANK = {};
 
-  /**
-   * Base path to question files (relative to index.html).
-   * On GitHub Pages this is just 'js/questions/'.
-   */
+  /* ── Manifest: topic id → ordered array of part file names ─ */
+  const TOPIC_MANIFEST = {
+    'core-testing':   ['topic-01-core-testing-p1','topic-01-core-testing-p2','topic-01-core-testing-p3','topic-01-core-testing-p4'],
+    'sql-db':         ['topic-02-sql-db-p1','topic-02-sql-db-p2','topic-02-sql-db-p3','topic-02-sql-db-p4'],
+    'java':           ['topic-03-java-p1','topic-03-java-p2','topic-03-java-p3','topic-03-java-p4'],
+    'javascript':     ['topic-04-javascript-p1','topic-04-javascript-p2','topic-04-javascript-p3','topic-04-javascript-p4'],
+    'python':         ['topic-05-python-p1','topic-05-python-p2','topic-05-python-p3','topic-05-python-p4'],
+    'testng':         ['topic-06-testng-p1','topic-06-testng-p2','topic-06-testng-p3','topic-06-testng-p4'],
+    'mobile-testing': ['topic-07-mobile-testing-p1','topic-07-mobile-testing-p2','topic-07-mobile-testing-p3','topic-07-mobile-testing-p4'],
+    'api-postman':    ['topic-08-api-postman-p1','topic-08-api-postman-p2','topic-08-api-postman-p3','topic-08-api-postman-p4'],
+    'git-github':     ['topic-09-git-github-p1','topic-09-git-github-p2','topic-09-git-github-p3','topic-09-git-github-p4'],
+    'cucumber':       ['topic-10-cucumber-p1','topic-10-cucumber-p2','topic-10-cucumber-p3','topic-10-cucumber-p4'],
+    'selenium':       ['topic-11-selenium-p1','topic-11-selenium-p2','topic-11-selenium-p3','topic-11-selenium-p4'],
+    'playwright':     ['topic-12-playwright-p1','topic-12-playwright-p2','topic-12-playwright-p3','topic-12-playwright-p4'],
+    'junit':          ['topic-13-junit-p1','topic-13-junit-p2','topic-13-junit-p3','topic-13-junit-p4'],
+  };
+
   const BASE_PATH = 'js/questions/';
 
-  /**
-   * Load a single topic file by script injection.
-   * @param {object} topicDef  - entry from App.TOPICS
-   * @param {Function} onDone  - called when file is loaded and parsed
-   * @param {Function} onError - called on load failure
-   */
-  function loadTopicFile(topicDef, onDone, onError) {
-    const { id, file, global: globalVar } = topicDef;
-
-    // Already loaded
-    if (_loaded.has(id) && window[globalVar]) {
-      onDone(window[globalVar]);
-      return;
-    }
-
-    // Queued — add to callback list
-    if (_loading.has(id)) {
-      _loading.get(id).push({ onDone, onError });
-      return;
-    }
-
-    // Start loading
-    _loading.set(id, [{ onDone, onError }]);
-
-    updateLoadingLabel(`Loading ${topicDef.label}…`);
-
-    const script = document.createElement('script');
-    script.src   = `${BASE_PATH}${file}.js`;
-    script.async = true;
-
-    script.onload = function () {
-      if (window[globalVar]) {
-        _loaded.add(id);
-        const callbacks = _loading.get(id) || [];
-        _loading.delete(id);
-        callbacks.forEach(cb => cb.onDone(window[globalVar]));
-      } else {
-        const err = new Error(`Global variable window.${globalVar} not found after loading ${file}.js`);
-        const callbacks = _loading.get(id) || [];
-        _loading.delete(id);
-        callbacks.forEach(cb => cb.onError(err));
-      }
-    };
-
-    script.onerror = function () {
-      const err = new Error(`Failed to load script: ${script.src}`);
-      const callbacks = _loading.get(id) || [];
-      _loading.delete(id);
-      callbacks.forEach(cb => cb.onError(err));
-    };
-
-    document.head.appendChild(script);
-  }
+  /* track injected scripts to prevent double-load */
+  const _injected = new Set();
 
   /**
-   * Load multiple topics in parallel, collect all questions, then callback.
-   * @param {string[]} topicIds    - array of topic id strings
-   * @param {Function} onAllDone   - called with combined question pool array
-   * @param {Function} onError     - called if any file fails
+   * Inject a single script file. Resolves when window.QUIZ_BANK[topicId]
+   * has grown (the part file concat'd into it).
    */
-  function loadTopics(topicIds, onAllDone, onError) {
-    const topics = App.TOPICS.filter(t => topicIds.includes(t.id));
+  function injectScript(filename) {
+    return new Promise((resolve, reject) => {
+      if (_injected.has(filename)) { resolve(); return; }
+      _injected.add(filename);
 
-    if (topics.length === 0) {
-      onError(new Error('No matching topics found for ids: ' + topicIds.join(', ')));
-      return;
-    }
-
-    let remaining = topics.length;
-    const pool = [];
-    let failed = false;
-
-    topics.forEach(topicDef => {
-      loadTopicFile(
-        topicDef,
-        (questions) => {
-          if (failed) return;
-          pool.push(...questions);
-          remaining--;
-          updateLoadingLabel(`Loaded ${topics.length - remaining}/${topics.length} topic files…`);
-          if (remaining === 0) {
-            onAllDone(pool);
-          }
-        },
-        (err) => {
-          if (failed) return;
-          failed = true;
-          onError(err);
-        }
-      );
+      const script  = document.createElement('script');
+      script.src    = BASE_PATH + filename + '.js';
+      script.async  = false; // preserve order within a topic's parts
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Failed to load: ' + script.src));
+      document.head.appendChild(script);
     });
   }
 
-  function updateLoadingLabel(text) {
-    const el = document.getElementById('loading-label');
-    if (el) el.textContent = text;
+  /**
+   * Load all parts for a single topic sequentially, then return the array.
+   */
+  async function loadTopic(topicId) {
+    const parts = TOPIC_MANIFEST[topicId];
+    if (!parts) throw new Error('Unknown topic: ' + topicId);
+
+    for (const filename of parts) {
+      await injectScript(filename);
+    }
+
+    return window.QUIZ_BANK[topicId] || [];
   }
 
-  // Expose public API
+  /**
+   * Public API: load multiple topics in parallel, collect all questions.
+   * @param {string[]} topicIds
+   * @param {Function} onAllDone  — called with combined question array
+   * @param {Function} onError    — called on any failure
+   */
+  function loadTopics(topicIds, onAllDone, onError) {
+    const ids = topicIds.includes('all')
+      ? Object.keys(TOPIC_MANIFEST)
+      : topicIds;
+
+    const total  = ids.length;
+    let   loaded = 0;
+    const pool   = [];
+    let   failed = false;
+
+    function updateLabel() {
+      const el = document.getElementById('loading-label');
+      if (el) el.textContent = `Loading topics… (${loaded}/${total})`;
+    }
+
+    ids.forEach(id => {
+      loadTopic(id)
+        .then(questions => {
+          if (failed) return;
+          pool.push(...questions);
+          loaded++;
+          updateLabel();
+          if (loaded === total) onAllDone(pool);
+        })
+        .catch(err => {
+          if (failed) return;
+          failed = true;
+          onError(err);
+        });
+    });
+  }
+
+  /* Expose */
   window.QuizLoader = {
     loadTopics,
-    loadTopicFile,
-    isLoaded: (topicId) => _loaded.has(topicId),
+    loadTopic,
+    TOPIC_MANIFEST,
+    isPartLoaded: (filename) => _injected.has(filename),
   };
-
 })();
