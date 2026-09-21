@@ -85,6 +85,24 @@ function escHtml(s) {
   ));
 }
 
+/**
+ * Render a question or explanation string that may contain a code block.
+ * A double-newline (\n\n) separates the prose intro from the code snippet.
+ * The code part is wrapped in <pre><code> so whitespace and line breaks render
+ * correctly. Plain questions with no code block are returned as escaped text.
+ */
+function formatQuestion(text) {
+  const parts = text.split('\n\n');
+  if (parts.length === 1) {
+    // No code block — plain question, just escape and preserve line breaks
+    return escHtml(text).replace(/\n/g, '<br>');
+  }
+  // First part is the prose question; remaining parts are the code block
+  const prose = escHtml(parts[0]);
+  const code  = escHtml(parts.slice(1).join('\n\n'));
+  return `${prose}<pre class="question-code-block"><code>${code}</code></pre>`;
+}
+
 function $(sel, ctx = document) { return ctx.querySelector(sel); }
 function $$(sel, ctx = document) { return [...ctx.querySelectorAll(sel)]; }
 
@@ -623,7 +641,7 @@ function renderQuizScreen() {
         </button>
       </div>
 
-      <div class="question-text">${escHtml(q.question)}</div>
+      <div class="question-text">${formatQuestion(q.question)}</div>
 
       <div class="options-list" role="list" id="options-list">
         ${optionsHtml}
