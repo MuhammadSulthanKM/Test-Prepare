@@ -26,7 +26,7 @@
     'api-postman':    ['topic-08-api-postman-p1','topic-08-api-postman-p2','topic-08-api-postman-p3','topic-08-api-postman-p4'],
     'git-github':     ['topic-09-git-github-p1','topic-09-git-github-p2','topic-09-git-github-p3','topic-09-git-github-p4'],
     'cucumber':       ['topic-10-cucumber-p1','topic-10-cucumber-p2','topic-10-cucumber-p3','topic-10-cucumber-p4'],
-    'selenium':       ['topic-11-selenium-p1','topic-11-selenium-p2','topic-11-selenium-p3','topic-11-selenium-p4'],
+    'selenium':       ['topic-11-selenium-p1','topic-11-selenium-p2'], // extend when p3–p4 are added
     'playwright':     ['topic-12-playwright-p1','topic-12-playwright-p2','topic-12-playwright-p3','topic-12-playwright-p4'],
     'junit':          ['topic-13-junit-p1','topic-13-junit-p2','topic-13-junit-p3','topic-13-junit-p4'],
   };
@@ -41,7 +41,7 @@
    * has grown (the part file concat'd into it).
    */
   function injectScript(filename) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (_injected.has(filename)) { resolve(); return; }
       _injected.add(filename);
 
@@ -49,7 +49,11 @@
       script.src    = BASE_PATH + filename + '.js';
       script.async  = false; // preserve order within a topic's parts
       script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load: ' + script.src));
+      script.onerror = () => {
+        // Warn but resolve so a missing part file doesn't abort the whole quiz
+        console.warn('[QuizLoader] Part file not found (skipped):', script.src);
+        resolve();
+      };
       document.head.appendChild(script);
     });
   }

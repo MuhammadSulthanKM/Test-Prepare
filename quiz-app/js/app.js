@@ -18,19 +18,19 @@ const LS_KEYS = {
 };
 
 const TOPICS = [
-  { id: 'core-testing',   label: 'Core Testing Fundamentals',  icon: '🧪', file: 'topic-01-core-testing',  global: 'QUESTIONS_CORE_TESTING',  color: '#0f62fe', count: 835 },
-  { id: 'sql-db',         label: 'SQL & Database Fundamentals', icon: '🗄️', file: 'topic-02-sql-db',         global: 'QUESTIONS_SQL_DB',         color: '#198038', count: 835 },
-  { id: 'java',           label: 'Java Fundamentals',           icon: '☕', file: 'topic-03-java',           global: 'QUESTIONS_JAVA',           color: '#c02b2b', count: 835 },
-  { id: 'javascript',     label: 'JavaScript Fundamentals',     icon: '🟨', file: 'topic-04-javascript',     global: 'QUESTIONS_JAVASCRIPT',     color: '#eab308', count: 835 },
-  { id: 'python',         label: 'Python Fundamentals',         icon: '🐍', file: 'topic-05-python',         global: 'QUESTIONS_PYTHON',         color: '#3b82f6', count: 835 },
-  { id: 'testng',         label: 'TestNG Fundamentals',         icon: '✅', file: 'topic-06-testng',         global: 'QUESTIONS_TESTNG',         color: '#7c3aed', count: 835 },
-  { id: 'mobile-testing', label: 'Mobile Testing Fundamentals', icon: '📱', file: 'topic-07-mobile-testing', global: 'QUESTIONS_MOBILE_TESTING',  color: '#0891b2', count: 835 },
-  { id: 'api-postman',    label: 'API Testing / Postman',       icon: '🔌', file: 'topic-08-api-postman',    global: 'QUESTIONS_API_POSTMAN',    color: '#ea580c', count: 835 },
-  { id: 'git-github',     label: 'Git & GitHub Fundamentals',   icon: '🐙', file: 'topic-09-git-github',     global: 'QUESTIONS_GIT_GITHUB',     color: '#374151', count: 835 },
-  { id: 'cucumber',       label: 'Cucumber Fundamentals',       icon: '🥒', file: 'topic-10-cucumber',       global: 'QUESTIONS_CUCUMBER',       color: '#15803d', count: 835 },
-  { id: 'selenium',       label: 'Selenium',                    icon: '🌐', file: 'topic-11-selenium',       global: 'QUESTIONS_SELENIUM',       color: '#1e40af', count: 835 },
-  { id: 'playwright',     label: 'Playwright',                  icon: '🎭', file: 'topic-12-playwright',     global: 'QUESTIONS_PLAYWRIGHT',     color: '#6d28d9', count: 835 },
-  { id: 'junit',          label: 'JUnit',                       icon: '🔬', file: 'topic-13-junit',          global: 'QUESTIONS_JUNIT',          color: '#b45309', count: 835 },
+  { id: 'core-testing',   label: 'Core Testing Fundamentals',  icon: '🧪', file: 'topic-01-core-testing',  global: 'QUESTIONS_CORE_TESTING',  color: '#0f62fe', count: 420 },
+  { id: 'sql-db',         label: 'SQL & Database Fundamentals', icon: '🗄️', file: 'topic-02-sql-db',         global: 'QUESTIONS_SQL_DB',         color: '#198038', count: 380 },
+  { id: 'java',           label: 'Java Fundamentals',           icon: '☕', file: 'topic-03-java',           global: 'QUESTIONS_JAVA',           color: '#c02b2b', count: 270 },
+  { id: 'javascript',     label: 'JavaScript Fundamentals',     icon: '🟨', file: 'topic-04-javascript',     global: 'QUESTIONS_JAVASCRIPT',     color: '#eab308', count: 370 },
+  { id: 'python',         label: 'Python Fundamentals',         icon: '🐍', file: 'topic-05-python',         global: 'QUESTIONS_PYTHON',         color: '#3b82f6', count: 420 },
+  { id: 'testng',         label: 'TestNG Fundamentals',         icon: '✅', file: 'topic-06-testng',         global: 'QUESTIONS_TESTNG',         color: '#7c3aed', count: 420 },
+  { id: 'mobile-testing', label: 'Mobile Testing Fundamentals', icon: '📱', file: 'topic-07-mobile-testing', global: 'QUESTIONS_MOBILE_TESTING',  color: '#0891b2', count: 420 },
+  { id: 'api-postman',    label: 'API Testing / Postman',       icon: '🔌', file: 'topic-08-api-postman',    global: 'QUESTIONS_API_POSTMAN',    color: '#ea580c', count: 420 },
+  { id: 'git-github',     label: 'Git & GitHub Fundamentals',   icon: '🐙', file: 'topic-09-git-github',     global: 'QUESTIONS_GIT_GITHUB',     color: '#374151', count: 420 },
+  { id: 'cucumber',       label: 'Cucumber Fundamentals',       icon: '🥒', file: 'topic-10-cucumber',       global: 'QUESTIONS_CUCUMBER',       color: '#15803d', count: 420 },
+  { id: 'selenium',       label: 'Selenium',                    icon: '🌐', file: 'topic-11-selenium',       global: 'QUESTIONS_SELENIUM',       color: '#1e40af', count: 210 },
+  { id: 'playwright',     label: 'Playwright',                  icon: '🎭', file: 'topic-12-playwright',     global: 'QUESTIONS_PLAYWRIGHT',     color: '#6d28d9', count: 420 },
+  { id: 'junit',          label: 'JUnit',                       icon: '🔬', file: 'topic-13-junit',          global: 'QUESTIONS_JUNIT',          color: '#b45309', count: 420 },
 ];
 
 const QUIZ_LENGTHS = [10, 25, 50, 100];
@@ -416,9 +416,9 @@ function renderHomeScreen() {
   <div class="home-header">
     <div style="max-width:720px;margin:0 auto">
       <h1>Practice Quiz</h1>
-      <p>10,000+ fact-checked questions across 13 QA engineering topics</p>
+      <p>4,000+ fact-checked questions across 13 QA engineering topics</p>
       <div class="home-stats">
-        <div class="home-stat"><strong>10,855</strong><span>Questions</span></div>
+        <div class="home-stat"><strong>4,170</strong><span>Questions</span></div>
         <div class="home-stat"><strong>13</strong><span>Topics</span></div>
         <div class="home-stat"><strong>3</strong><span>Difficulty Levels</span></div>
         <div class="home-stat"><strong>${bookmarkCount}</strong><span>Bookmarked</span></div>
@@ -446,7 +446,8 @@ function renderHomeScreen() {
         <div class="topic-icon">🎯</div>
         <div>
           <div class="topic-name">All Topics — Mixed Mode</div>
-          <div class="topic-count">10,855 questions combined</div>
+          <div class="topic-count">4,170 questions combined</div>
+          <!-- total will update automatically as playwright/junit files are added -->
         </div>
       </button>
       ${topicCards}
