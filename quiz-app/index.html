@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="IBM QE-FULLSTACK Quiz — 10,000+ practice questions across 12 topics" />
+  <meta name="theme-color" content="#0f62fe" />
+  <title>IBM QE-FULLSTACK | Practice Quiz</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Critical above-the-fold CSS — inlined to prevent FOUC */
+    #splash{position:fixed;inset:0;background:#0f62fe;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s,visibility .4s}
+    #splash.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    #splash .logo{color:#fff;font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+    #splash .tagline{color:#a8c8ff;font-size:.95rem;margin-bottom:2rem}
+    #splash .bar{width:200px;height:4px;background:#1a4fbe;border-radius:99px;overflow:hidden}
+    #splash .bar-fill{height:100%;width:0;background:#fff;border-radius:99px;animation:load 1.6s ease forwards}
+    @keyframes load{0%{width:0}60%{width:70%}100%{width:100%}}
+  </style>
+</head>
+<body>
+  <!-- Splash screen -->
+  <div id="splash" role="status" aria-label="Loading application">
+    <div class="logo">IBM QE-FULLSTACK</div>
+    <div class="tagline">Practice Quiz — 10,000+ Questions</div>
+    <div class="bar"><div class="bar-fill"></div></div>
+  </div>
+
+  <!-- App root — all screens rendered here by app.js -->
+  <div id="app" role="main" aria-live="polite"></div>
+
+  <!-- Toast notification container -->
+  <div id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Load quiz engine first, then lazy loader -->
+  <script src="js/app.js"></script>
+  <script src="js/loader.js"></script>
+</body>
+</html>
