@@ -31,7 +31,7 @@ const TOPICS = [
   { id: 'selenium',       label: 'Selenium',                    icon: '🌐', file: 'topic-11-selenium',       global: 'QUESTIONS_SELENIUM',       color: '#1e40af', count: 210 },
   { id: 'playwright',     label: 'Playwright',                  icon: '🎭', file: 'topic-12-playwright',     global: 'QUESTIONS_PLAYWRIGHT',     color: '#6d28d9', count: 420 },
   { id: 'junit',          label: 'JUnit',                       icon: '🔬', file: 'topic-13-junit',          global: 'QUESTIONS_JUNIT',          color: '#b45309', count: 420 },
-  { id: 'code-challenges', label: 'Code Challenges',            icon: '💻', file: 'topic-14-code-challenges', global: 'QUESTIONS_CODE_CHALLENGES', color: '#6366f1', count: 590 },
+  { id: 'code-challenges', label: 'Code Challenges',            icon: '💻', file: 'topic-14-code-challenges', global: 'QUESTIONS_CODE_CHALLENGES', color: '#6366f1', count: 830 },
 ];
 
 const QUIZ_LENGTHS = [10, 25, 50, 100];

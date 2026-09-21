@@ -29,7 +29,7 @@
     'selenium':       ['topic-11-selenium-p1','topic-11-selenium-p2'], // extend when p3–p4 are added
     'playwright':     ['topic-12-playwright-p1','topic-12-playwright-p2','topic-12-playwright-p3','topic-12-playwright-p4'],
     'junit':          ['topic-13-junit-p1','topic-13-junit-p2','topic-13-junit-p3','topic-13-junit-p4'],
-    'code-challenges': ['topic-14-code-challenges-p1','topic-14-code-challenges-p2','topic-14-code-challenges-p3','topic-14-code-challenges-p4','topic-14-code-challenges-p5','topic-14-code-challenges-p6','topic-14-code-challenges-p7','topic-14-code-challenges-p8','topic-14-code-challenges-p9','topic-14-code-challenges-p10'],
+    'code-challenges': ['topic-14-code-challenges-p1','topic-14-code-challenges-p2','topic-14-code-challenges-p3','topic-14-code-challenges-p4','topic-14-code-challenges-p5','topic-14-code-challenges-p6','topic-14-code-challenges-p7','topic-14-code-challenges-p8','topic-14-code-challenges-p9','topic-14-code-challenges-p10','topic-14-code-challenges-p11','topic-14-code-challenges-p12','topic-14-code-challenges-p13','topic-14-code-challenges-p14'],
   };
 
   const BASE_PATH = 'js/questions/';
