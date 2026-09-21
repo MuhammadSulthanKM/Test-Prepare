@@ -290,7 +290,14 @@ function autoSubmit() {
 
 /* ── Quiz Engine ────────────────────────────────────────────── */
 function buildQuiz(questionPool) {
-  let pool = [...questionPool];
+  // Deduplicate by question id — prevents repeats if a part file was somehow
+  // executed more than once (concat pattern doubles the array in that case).
+  const seen = new Set();
+  let pool = questionPool.filter(q => {
+    if (seen.has(q.id)) return false;
+    seen.add(q.id);
+    return true;
+  });
 
   // Filter by difficulty
   if (State.difficulty !== 'all') {
