@@ -333,8 +333,13 @@ function goNext() {
   if (State.currentIndex < State.questions.length - 1) {
     State.currentIndex++;
     State.submitted = false;
+    clearTimer();
     saveSession();
-    renderQuizScreen();
+    const app = document.getElementById('app');
+    app.innerHTML = renderQuizScreen();
+    app._listenerBound = false;
+    bindEvents();
+    if (State.timerMode) startTimer();
   } else {
     finishQuiz();
   }
@@ -873,8 +878,10 @@ function handleKeydown(e) {
   if (e.key === 'ArrowLeft' && State.currentIndex > 0) {
     State.currentIndex--;
     State.submitted = (State.answers[State.currentIndex]?.chosen !== null);
-    renderQuizScreen();
-    document.getElementById('app').innerHTML = renderQuizScreen();
+    clearTimer();
+    const app = document.getElementById('app');
+    app.innerHTML = renderQuizScreen();
+    app._listenerBound = false;
     bindEvents();
     if (!State.submitted && State.timerMode) startTimer();
   }
