@@ -26,7 +26,7 @@
     'api-postman':    ['topic-08-api-postman-p1','topic-08-api-postman-p2','topic-08-api-postman-p3','topic-08-api-postman-p4'],
     'git-github':     ['topic-09-git-github-p1','topic-09-git-github-p2','topic-09-git-github-p3','topic-09-git-github-p4'],
     'cucumber':       ['topic-10-cucumber-p1','topic-10-cucumber-p2','topic-10-cucumber-p3','topic-10-cucumber-p4'],
-    'selenium':       ['topic-11-selenium-p1','topic-11-selenium-p2'], // extend when p3–p4 are added
+    'selenium':       ['topic-11-selenium-p1','topic-11-selenium-p2','topic-11-selenium-p3','topic-11-selenium-p4'],
     'playwright':     ['topic-12-playwright-p1','topic-12-playwright-p2','topic-12-playwright-p3','topic-12-playwright-p4'],
     'junit':          ['topic-13-junit-p1','topic-13-junit-p2','topic-13-junit-p3','topic-13-junit-p4'],
     'code-challenges': ['topic-14-code-challenges-p1','topic-14-code-challenges-p2','topic-14-code-challenges-p3','topic-14-code-challenges-p4','topic-14-code-challenges-p5','topic-14-code-challenges-p6','topic-14-code-challenges-p7','topic-14-code-challenges-p8','topic-14-code-challenges-p9','topic-14-code-challenges-p10','topic-14-code-challenges-p11','topic-14-code-challenges-p12','topic-14-code-challenges-p13','topic-14-code-challenges-p14'],
