@@ -564,6 +564,33 @@ a { color: var(--accent); text-decoration: none; }
   margin-bottom: 6px;
 }
 
+/* ── Code block inside question cards ───────────────────────── */
+pre.question-code-block {
+  margin: 12px 0 4px;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+pre.question-code-block code {
+  font-family: var(--mono);
+  font-size: .88rem;
+  line-height: 1.65;
+  color: var(--text);
+  white-space: pre;
+  display: block;
+}
+
+[data-theme="dark"] pre.question-code-block {
+  background: #0d1117;
+  border-color: #30363d;
+  border-left-color: var(--accent);
+}
+
 /* ── Answer Options ──────────────────────────────────────────── */
 .options-list {
   display: flex;
